@@ -1,0 +1,61 @@
+body{
+    background-image: url("./uno.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+}
+
+.players-select{
+    opacity: 1;
+    width: 100vw;
+    display: flex;
+    justify-content:center;
+}
+.players-select-inv{
+    opacity: 0;
+    width: 100vw;
+    display: flex;
+    justify-content:center;
+}
+.players-select-1{
+    display: inline-block;
+    color: white;
+    background-color: rgb(165, 119, 79);
+    width: 100px;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 20px;
+}
+
+.game{
+    width: 100vw;
+    height: 70vh;
+    /* background-color: black; */
+    border: 1px solid red;
+    /* padding: 20px; */
+    display: flex;
+}
+
+.mod-img{
+    width: 198px;
+    height: auto;
+
+}
+
+.game1{
+    display: flex;
+    align-items: center;
+    width: 200px;
+    border: 1px solid red;
+}
+.game2{
+    border: 1px solid blue;
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
