@@ -5,7 +5,6 @@ import {useState,useEffect,useRef} from "react"
 function App() {
   let [players,setPlayers]=useState(0);
 
-
   const [totalCardsA,setTotalCardsA]=useState([
     //blue cards 0-19
     "blue-0",
@@ -251,9 +250,22 @@ function App() {
 
   let [turn,setTurn]=useState("right");
 
-  console.log(turn);
-
   let [active,setActive]=useState([]);
+
+  let [p1,setP1]=useState([]);
+
+  let [p2,setP2]=useState([]);
+
+  let [p3,setP3]=useState([]);
+
+  let [p4,setP4]=useState([]);
+
+  let [selectedP,setSelectedP]=useState(1);
+
+  let isP1=useRef(false);
+  let isP2=useRef(false);
+  let isP3=useRef(false);
+  let isP4=useRef(false);
 
   //carduud yalgah 
   useEffect(()=>{
@@ -271,6 +283,7 @@ function App() {
       active.push(1);
       active.push(2);
       setActive([...active]);
+
     }
   }
   if(players==3){
@@ -290,15 +303,128 @@ function App() {
       setActive([...active]);
     }
   }
-  console.log(active);
 
-  let [player1,setPlayer1]=useState([]);
-  let [player2,setPlayer2]=useState([]);
-  let [player3,setPlayer3]=useState([]);
-  let [player4,setPlayer4]=useState([]);
+  //togliimnii ehnd player bolgond carduud ugnu
+  useEffect(()=>{
+    if(players==2){
+      while(p1.length!=5){
+        const card=totalCardsB[totalCardsB.length-1];
+        p1.push(card);
+        totalCardsB.splice(totalCardsB.length-1,1);
+      }
+      while(p2.length!=5){
+        const card=totalCardsB[totalCardsB.length-1];
+        p2.push(card);
+        totalCardsB.splice(totalCardsB.length-1,1);
+      }
+    }
+
+    if(players==3){
+      while(p1.length!=5){
+        const card=totalCardsB[totalCardsB.length-1];
+        p1.push(card);
+        totalCardsB.splice(totalCardsB.length-1,1);
+      }
+      while(p2.length!=5){
+        const card=totalCardsB[totalCardsB.length-1];
+        p2.push(card);
+        totalCardsB.splice(totalCardsB.length-1,1);
+      }
+      while(p3.length!=5){
+        const card=totalCardsB[totalCardsB.length-1];
+        p3.push(card);
+        totalCardsB.splice(totalCardsB.length-1,1);
+      }
+    }
+
+    if(players==4){
+      while(p1.length!=5){
+        const card=totalCardsB[totalCardsB.length-1];
+        p1.push(card);
+        totalCardsB.splice(totalCardsB.length-1,1);
+      }
+      while(p2.length!=5){
+        const card=totalCardsB[totalCardsB.length-1];
+        p2.push(card);
+        totalCardsB.splice(totalCardsB.length-1,1);
+      }
+      while(p3.length!=5){
+        const card=totalCardsB[totalCardsB.length-1];
+        p3.push(card);
+        totalCardsB.splice(totalCardsB.length-1,1);
+      }
+      while(p4.length!=5){
+        const card=totalCardsB[totalCardsB.length-1];
+        p4.push(card);
+        totalCardsB.splice(totalCardsB.length-1,1);
+      }
+    }
+    setP1([...p1]);
+    setP2([...p2]);
+    setP3([...p3]);
+    setP4([...p4]);
+  },[players]);
+
+  // console.log(p1);
+  // console.log(p2);
+  // console.log(p3);
+  // console.log(p4);
+  // console.log(totalCardsB);
+
+  function nextTurn(){
+    if(selectedP!=active.length && active.length!=0){
+      setSelectedP(prev=>prev+1);
+    }else{
+      setSelectedP(selectedP=1);
+    }
+  }
+
+  if(selectedP==1){
+    isP1.current=true;
+    isP2.current=false;
+    isP3.current=false;
+    isP4.current=false;
+  }
+  if(selectedP==2){
+    isP1.current=false;
+    isP2.current=true;
+    isP3.current=false;
+    isP4.current=false;
+  }
+  if(selectedP==3){
+    if(active.length>=3){
+      isP1.current=false;
+      isP2.current=false;
+      isP3.current=true;
+      isP4.current=false;
+    }else{
+      isP1.current=true;
+      isP2.current=false;
+      isP3.current=false;
+      isP4.current=false;
+    }
+  }
+  if(selectedP==4){
+    if(active.length>=4){
+      isP1.current=false;
+      isP2.current=false;
+      isP3.current=false;
+      isP4.current=true;
+    }else{
+      isP1.current=true;
+      isP2.current=false;
+      isP3.current=false;
+      isP4.current=false;
+    }
+  }
+
+  // console.log("p1",isP1);
+  // console.log("p2",isP2);
+  // console.log("p3",isP3);
+  // console.log("p4",isP4);
+  console.log(selectedP);
 
 
-  
   return (
     <>
       <div className={players==0 ? "players-select" :"players-select-inv"}>
@@ -318,11 +444,57 @@ function App() {
 
       <div className='game'>
         <div className='game1'>
+          <p>
+            {
+              isP1.current?(
+                "player 1 turn"
+              ):
+              isP2.current?(
+                "player 2 turn"
+              ):
+              isP3.current?(
+                "player 3 turn"
+              ):(
+                "player 4 turn"
+              )
+            }
+          </p>
           <img className='mod-img' src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/fed3bb24-454f-4bdf-a721-6aa8f23e7cef/d9gnihf-ec16caeb-ec9c-4870-9480-57c7711d844f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2ZlZDNiYjI0LTQ1NGYtNGJkZi1hNzIxLTZhYThmMjNlN2NlZlwvZDlnbmloZi1lYzE2Y2FlYi1lYzljLTQ4NzAtOTQ4MC01N2M3NzExZDg0NGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.kp5EommPFQl1sDPPtC-p8JloXDTm3CyNUgoievwh8Kw"/>
         </div>
 
         <div className='game2'>
-          <button className='button'>Done</button>
+          <button className='button' onClick={nextTurn}>Done</button>
+          <div className='player-cards'>
+            {
+             isP1.current?(
+              p1.map((card,i)=>{
+                return(
+                  <p>{card}</p>
+                )
+              })
+             ):
+             isP2.current?(
+              p2.map((card,i)=>{
+                return(
+                  <p>{card}</p>
+                )
+              })
+             ):
+             isP3.current?(
+              p3.map((card,i)=>{
+                return(
+                  <p>{card}</p>
+                )
+              })
+             ):(
+              p4.map((card,i)=>{
+                return(
+                  <p>{card}</p>
+                )
+              })
+             )
+            }
+          </div>
         </div>
       </div>
 
