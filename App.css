@@ -69,6 +69,17 @@ height: 100%;
 }
 
 .card-image{
-    width: 100px;
-    height: auto;
+  width: 100px;
+  height: auto;
+}
+
+.button{
+  background-color: rgb(46, 58, 58);
+  color: white;
+  border: 1px solid rgb(50, 74, 74);
+  width: 100px;
+  height: 80px;
+  border-radius: 20px;
+  font-size: 30px;
+  font-weight: bold;
 }

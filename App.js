@@ -1,5 +1,4 @@
 import './App.css';
-import {Card} from "./Card";
 import {useState,useEffect,useRef,createContext} from "react"
 
 
@@ -664,16 +663,26 @@ function App() {
     }
   }
 
+  //ehnii cardiig gargah
   useEffect(()=>{
     placedCard.current.push(totalCardsB[totalCardsB.length-1]);
     totalCardsB.splice(totalCardsB.length-1,1);
   },[])
+
   // console.log(totalCardsB)
+
+  let lastPLacedCard=(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]));
+
+  // console.log(lastPLacedCard)
+
 
   function plusPlacedCard(card,p){
     // console.log(p);
     // console.log(placedCard);
+
+    let chosenCard=colorAndNumberIndicator(card);
     
+
     placedCard.current.push(card);
     if(p=="p1"){
       const index=p1.indexOf(card);
@@ -694,6 +703,284 @@ function App() {
     setRenderingPurposely(prev=>prev+1);
   }
 
+  function colorAndNumberIndicator(card){
+    let color=null;
+    let number=null;
+    let colorAndNumber={Color:null,Number:null};
+
+    //setting colors
+
+    if(
+      card=="blue-0" ||
+      card=="blue-1-1" ||
+      card=="blue-2-1" ||
+      card=="blue-3-1" ||
+      card=="blue-4-1" ||
+      card=="blue-5-1" ||
+      card=="blue-6-1" ||
+      card=="blue-7-1" ||
+      card=="blue-8-1" ||
+      card=="blue-9-1" ||
+      card=="blue-1-2" ||
+      card=="blue-2-2" ||
+      card=="blue-3-2" ||
+      card=="blue-4-2" ||
+      card=="blue-5-2" ||
+      card=="blue-6-2" ||
+      card=="blue-7-2" ||
+      card=="blue-8-2" ||
+      card=="blue-9-2" ||
+      card=="blue-skipCard-1" ||
+      card=="blue-skipCard-2" ||
+      card=="blue-reverseCard-1" ||
+      card=="blue-reverseCard-2" ||
+      card=="blue-draw2Card-1" ||
+      card=="blue-draw2Card-2" 
+    ){
+      color="blue";
+    }
+
+    if(
+      card=="green-0" ||
+      card=="green-1-1" ||
+      card=="green-2-1" ||
+      card=="green-3-1" ||
+      card=="green-4-1" ||
+      card=="green-5-1" ||
+      card=="green-6-1" ||
+      card=="green-7-1" ||
+      card=="green-8-1" ||
+      card=="green-9-1" ||
+      card=="green-1-2" ||
+      card=="green-2-2" ||
+      card=="green-3-2" ||
+      card=="green-4-2" ||
+      card=="green-5-2" ||
+      card=="green-6-2" ||
+      card=="green-7-2" ||
+      card=="green-8-2" ||
+      card=="green-9-2" ||
+      card=="green-skipCard-1" ||
+      card=="green-skipCard-2" ||
+      card=="green-reverseCard-1" ||
+      card=="green-reverseCard-2" ||
+      card=="green-draw2Card-1" ||
+      card=="green-draw2Card-2" 
+    ){
+      color="green";
+    }
+
+    if(
+      card=="red-0" ||
+      card=="red-1-1" ||
+      card=="red-2-1" ||
+      card=="red-3-1" ||
+      card=="red-4-1" ||
+      card=="red-5-1" ||
+      card=="red-6-1" ||
+      card=="red-7-1" ||
+      card=="red-8-1" ||
+      card=="red-9-1" ||
+      card=="red-1-2" ||
+      card=="red-2-2" ||
+      card=="red-3-2" ||
+      card=="red-4-2" ||
+      card=="red-5-2" ||
+      card=="red-6-2" ||
+      card=="red-7-2" ||
+      card=="red-8-2" ||
+      card=="red-9-2" ||
+      card=="red-skipCard-1" ||
+      card=="red-skipCard-2" ||
+      card=="red-reverseCard-1" ||
+      card=="red-reverseCard-2" ||
+      card=="red-draw2Card-1" ||
+      card=="red-draw2Card-2" 
+    ){
+      color="red";
+    }
+
+    if(
+      card=="yellow-0" ||
+      card=="yellow-1-1" ||
+      card=="yellow-2-1" ||
+      card=="yellow-3-1" ||
+      card=="yellow-4-1" ||
+      card=="yellow-5-1" ||
+      card=="yellow-6-1" ||
+      card=="yellow-7-1" ||
+      card=="yellow-8-1" ||
+      card=="yellow-9-1" ||
+      card=="yellow-1-2" ||
+      card=="yellow-2-2" ||
+      card=="yellow-3-2" ||
+      card=="yellow-4-2" ||
+      card=="yellow-5-2" ||
+      card=="yellow-6-2" ||
+      card=="yellow-7-2" ||
+      card=="yellow-8-2" ||
+      card=="yellow-9-2" ||
+      card=="yellow-skipCard-1" ||
+      card=="yellow-skipCard-2" ||
+      card=="yellow-reverseCard-1" ||
+      card=="yellow-reverseCard-2" ||
+      card=="yellow-draw2Card-1" ||
+      card=="yellow-draw2Card-2" 
+    ){
+      color="yellow";
+    }
+
+    if(
+      card=="wildCard-1"||
+      card=="wildCard-2"||
+      card=="wildCard-3"||
+      card=="wildCard-4"||
+      card=="wildDrawCard-1"||
+      card=="wildDrawCard-2"||
+      card=="wildDrawCard-3"||
+      card=="wildDrawCard-4"
+    ){
+      color="special";
+      // number=-1;
+    }
+
+    //setting numbers
+
+    if(
+      card=="blue-0"||
+      card=="green-0"||
+      card=="red-0"||
+      card=="yellow-0"
+    ){
+      number=0
+    }
+
+    if(
+      card=="blue-1-1" ||
+      card=="blue-1-2" ||
+      card=="green-1-1" ||
+      card=="green-1-2" ||
+      card=="red-1-1" ||
+      card=="red-1-2" ||
+      card=="yellow-1-1" ||
+      card=="yellow-1-2" 
+    ){
+      number=1
+    }
+
+    if(
+      card=="blue-2-1" ||
+      card=="blue-2-2" ||
+      card=="green-2-1" ||
+      card=="green-2-2" ||
+      card=="red-2-1" ||
+      card=="red-2-2" ||
+      card=="yellow-2-1" ||
+      card=="yellow-2-2" 
+    ){
+      number=2
+    }
+
+    if(
+      card=="blue-3-1" ||
+      card=="blue-3-2" ||
+      card=="green-3-1" ||
+      card=="green-3-2" ||
+      card=="red-3-1" ||
+      card=="red-3-2" ||
+      card=="yellow-3-1" ||
+      card=="yellow-3-2" 
+    ){
+      number=3
+    }
+
+    if(
+      card=="blue-4-1" ||
+      card=="blue-4-2" ||
+      card=="green-4-1" ||
+      card=="green-4-2" ||
+      card=="red-4-1" ||
+      card=="red-4-2" ||
+      card=="yellow-4-1" ||
+      card=="yellow-4-2" 
+    ){
+      number=4
+    }
+
+    if(
+      card=="blue-5-1" ||
+      card=="blue-5-2" ||
+      card=="green-5-1" ||
+      card=="green-5-2" ||
+      card=="red-5-1" ||
+      card=="red-5-2" ||
+      card=="yellow-5-1" ||
+      card=="yellow-5-2" 
+    ){
+      number=5
+    }
+
+    if(
+      card=="blue-6-1" ||
+      card=="blue-6-2" ||
+      card=="green-6-1" ||
+      card=="green-6-2" ||
+      card=="red-6-1" ||
+      card=="red-6-2" ||
+      card=="yellow-6-1" ||
+      card=="yellow-6-2" 
+    ){
+      number=6
+    }
+
+    if(
+      card=="blue-7-1" ||
+      card=="blue-7-2" ||
+      card=="green-7-1" ||
+      card=="green-7-2" ||
+      card=="red-7-1" ||
+      card=="red-7-2" ||
+      card=="yellow-7-1" ||
+      card=="yellow-7-2" 
+    ){
+      number=7
+    }
+
+    if(
+      card=="blue-8-1" ||
+      card=="blue-8-2" ||
+      card=="green-8-1" ||
+      card=="green-8-2" ||
+      card=="red-8-1" ||
+      card=="red-8-2" ||
+      card=="yellow-8-1" ||
+      card=="yellow-8-2" 
+    ){
+      number=8
+    }
+
+    if(
+      card=="blue-9-1" ||
+      card=="blue-9-2" ||
+      card=="green-9-1" ||
+      card=="green-9-2" ||
+      card=="red-9-1" ||
+      card=="red-9-2" ||
+      card=="yellow-9-1" ||
+      card=="yellow-9-2" 
+    ){
+      number=9
+    }
+
+    colorAndNumber.Color=color;
+    colorAndNumber.Number=number;
+
+    return colorAndNumber;
+
+  }
+
+  // console.log(colorAndNumberIndicator("blue-0"))
+
   return (
     <>
       <div className={players==0 ? "players-select" :"players-select-inv"}>
@@ -713,18 +1000,18 @@ function App() {
 
       <div className='game'>
         <div className='game1'>
-          <p style={{color:"white"}}>
+          <p style={{color:"white",fontWeight:"bold",fontSize:"20px"}}>
             {
               isP1.current?(
-                "player 1 turn"
+                "Player 1 turn"
               ):
               isP2.current?(
-                "player 2 turn"
+                "Player 2 turn"
               ):
               isP3.current?(
-                "player 3 turn"
+                "Player 3 turn"
               ):(
-                "player 4 turn"
+                "Player 4 turn"
               )
             }
           </p>
