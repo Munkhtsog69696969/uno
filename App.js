@@ -1,5 +1,5 @@
 import './App.css';
-import {useState,useEffect,useRef,createContext} from "react"
+import {useState,useEffect,useRef,createContext, useMemo} from "react"
 
 
 export const cards=createContext();
@@ -272,6 +272,17 @@ function App() {
   const placedCard=useRef([]);
 
   const [renderingPurposely,setRenderingPurposely]=useState(0);
+
+  let wildCardColorChange=useRef(false);
+
+  let wildCardDraw4=useRef(false);
+
+  let skipCard=useRef(false);
+
+  let reverseCard=useRef(false);
+
+  let draw2Card=useRef(false);
+
   //carduud yalgah 
   useEffect(()=>{
     totalCardsB.map((card,i)=>{
@@ -376,14 +387,24 @@ function App() {
   // console.log(p4);  
   // console.log(totalCardsB);
 
+  //bolku bn
 
   function nextTurn(){
-    if(selectedP!=active.length && active.length!=0){
+    if(selectedP!=active.length && active.length!=0 && reverseCard.current==false){
       setSelectedP(prev=>prev+1);
     }else{
       setSelectedP(selectedP=1);
     }
+
+    if(active.length!=0 && reverseCard.current==true && selectedP!=0){
+      selectedP=selectedP-1;
+      setSelectedP(selectedP);
+    }else{
+      selectedP=active[active.length-1]
+      setSelectedP(selectedP);
+    }
   }
+  console.log(selectedP);
 
   if(selectedP==1){
     isP1.current=true;
@@ -673,34 +694,68 @@ function App() {
 
   let lastPLacedCard=(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]));
 
+  if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="other-skip"){
+    skipCard.current=!skipCard.current;
+  }else{
+    if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="other-reverse"){
+      reverseCard.current=!reverseCard.current;
+    }else{
+      if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="other-draw2"){
+        draw2Card.current=!draw2Card.current;
+      }else{
+        if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="special"){
+          wildCardColorChange.current=!wildCardColorChange.current;
+        }else{
+          if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="specialDraw"){
+            wildCardDraw4.current=!wildCardDraw4.current;
+          }
+        }
+      }
+    }
+  }
+
+  if(reverseCard.current==true){
+    console.log("reversed")
+  }
+
+  // console.log(skipCard.current);
+  // console.log(reverseCard.current);
+  // console.log(draw2Card.current);
+  // console.log(wildCardColorChange.current);
+  // console.log(wildCardDraw4.current);
+
   // console.log(lastPLacedCard)
 
+  // console.log(selectedP)
 
   function plusPlacedCard(card,p){
     // console.log(p);
     // console.log(placedCard);
-
     let chosenCard=colorAndNumberIndicator(card);
-    
+    console.log(chosenCard)
 
-    placedCard.current.push(card);
-    if(p=="p1"){
-      const index=p1.indexOf(card);
-      p1.splice(index,1);
+    if(lastPLacedCard.Color==chosenCard.Color || lastPLacedCard.Number==chosenCard.Number || chosenCard.Color=="special"){
+      placedCard.current.push(card);
+      if(p=="p1"){
+        const index=p1.indexOf(card);
+        p1.splice(index,1);
+
+        // nextTurn();
+      }
+      if(p=="p2"){
+        const index=p2.indexOf(card);
+        p2.splice(index,1);
+      }
+      if(p=="p3"){
+        const index=p3.indexOf(card);
+        p3.splice(index,1);
+      }
+      if(p=="p4"){
+        const index=p4.indexOf(card);
+        p4.splice(index,1);
+      }
+      setRenderingPurposely(prev=>prev+1);
     }
-    if(p=="p2"){
-      const index=p2.indexOf(card);
-      p2.splice(index,1);
-    }
-    if(p=="p3"){
-      const index=p3.indexOf(card);
-      p3.splice(index,1);
-    }
-    if(p=="p4"){
-      const index=p4.indexOf(card);
-      p4.splice(index,1);
-    }
-    setRenderingPurposely(prev=>prev+1);
   }
 
   function colorAndNumberIndicator(card){
@@ -834,14 +889,20 @@ function App() {
       card=="wildCard-1"||
       card=="wildCard-2"||
       card=="wildCard-3"||
-      card=="wildCard-4"||
+      card=="wildCard-4"
+    ){
+      color="special";
+      number="special";
+    }
+
+    if(
       card=="wildDrawCard-1"||
       card=="wildDrawCard-2"||
       card=="wildDrawCard-3"||
       card=="wildDrawCard-4"
     ){
-      color="special";
-      // number=-1;
+      color="specialDraw"
+      number="specialDraw"
     }
 
     //setting numbers
@@ -972,11 +1033,73 @@ function App() {
       number=9
     }
 
+    if(
+      card=="blue-skipCard-1" ||
+      card=="blue-skipCard-2" ||
+      card=="green-skipCard-1" ||
+      card=="green-skipCard-2" ||
+      card=="red-skipCard-1" ||
+      card=="red-skipCard-2" ||
+      card=="yellow-skipCard-1" ||
+      card=="yellow-skipCard-2" 
+    ){
+      number="other-skip"
+    }
+
+    if(
+      card=="blue-reverseCard-1" ||
+      card=="blue-reverseCard-2" ||
+      card=="green-reverseCard-1" ||
+      card=="green-reverseCard-2" ||
+      card=="red-reverseCard-1" ||
+      card=="red-reverseCard-2" ||
+      card=="yellow-reverseCard-1" ||
+      card=="yellow-reverseCard-2" 
+    ){
+      number="other-reverse"
+    }
+
+    if(
+      card=="blue-draw2Card-1" ||
+      card=="blue-draw2Card-2" ||
+      card=="green-draw2Card-1" ||
+      card=="green-draw2Card-2" ||
+      card=="red-draw2Card-1" ||
+      card=="red-draw2Card-2" ||
+      card=="yellow-draw2Card-1" ||
+      card=="yellow-draw2Card-2" 
+    ){
+      number="other-draw2"
+    }
+
     colorAndNumber.Color=color;
     colorAndNumber.Number=number;
 
     return colorAndNumber;
 
+  }
+
+  function getCardFromMod(curretPlayer){
+    if(curretPlayer==1){
+      p1.push(totalCardsB[totalCardsB.length-1]);
+      totalCardsB.splice(totalCardsB.length-1,1);
+      setP1([...p1]);
+    }
+    if(curretPlayer==2){
+      p2.push(totalCardsB[totalCardsB.length-1]);
+      totalCardsB.splice(totalCardsB.length-1,1);
+      setP2([...p2]);
+    }
+    if(curretPlayer==3){
+      p3.push(totalCardsB[totalCardsB.length-1]);
+      totalCardsB.splice(totalCardsB.length-1,1);
+      setP3([...p3]);
+    }
+    if(curretPlayer==4){
+      p4.push(totalCardsB[totalCardsB.length-1]);
+      totalCardsB.splice(totalCardsB.length-1,1);
+      setP4([...p4]);
+    }
   }
 
   // console.log(colorAndNumberIndicator("blue-0"))
@@ -1015,11 +1138,13 @@ function App() {
               )
             }
           </p>
-          <img className='mod-img' src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/fed3bb24-454f-4bdf-a721-6aa8f23e7cef/d9gnihf-ec16caeb-ec9c-4870-9480-57c7711d844f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2ZlZDNiYjI0LTQ1NGYtNGJkZi1hNzIxLTZhYThmMjNlN2NlZlwvZDlnbmloZi1lYzE2Y2FlYi1lYzljLTQ4NzAtOTQ4MC01N2M3NzExZDg0NGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.kp5EommPFQl1sDPPtC-p8JloXDTm3CyNUgoievwh8Kw"/>
+          <img className='mod-img' src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/fed3bb24-454f-4bdf-a721-6aa8f23e7cef/d9gnihf-ec16caeb-ec9c-4870-9480-57c7711d844f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2ZlZDNiYjI0LTQ1NGYtNGJkZi1hNzIxLTZhYThmMjNlN2NlZlwvZDlnbmloZi1lYzE2Y2FlYi1lYzljLTQ4NzAtOTQ4MC01N2M3NzExZDg0NGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.kp5EommPFQl1sDPPtC-p8JloXDTm3CyNUgoievwh8Kw"
+            onClick={()=>getCardFromMod(selectedP)}
+          />
           <img className='mod-img' src={specififcCard(placedCard.current[placedCard.current.length-1])}/>
         </div>
+        <button className='button' onClick={nextTurn}>Done</button>
         <div className='game2'>
-          <button className='button' onClick={nextTurn}>Done</button>
           <div className='player-cards'>
             {
              isP1.current?(
