@@ -283,6 +283,8 @@ function App() {
 
   let draw2Card=useRef(false);
 
+  let specialCardsCol=useRef([]);
+
   //carduud yalgah 
   useEffect(()=>{
     totalCardsB.map((card,i)=>{
@@ -387,24 +389,26 @@ function App() {
   // console.log(p4);  
   // console.log(totalCardsB);
 
-  //bolku bn
-
   function nextTurn(){
-    if(selectedP!=active.length && active.length!=0 && reverseCard.current==false){
-      setSelectedP(prev=>prev+1);
+    if(reverseCard.current==true){
+      if(selectedP==1){
+        setSelectedP(selectedP=4);
+      }else{
+        setSelectedP(prev=>prev-1);
+      }
     }else{
-      setSelectedP(selectedP=1);
-    }
-
-    if(active.length!=0 && reverseCard.current==true && selectedP!=0){
-      selectedP=selectedP-1;
-      setSelectedP(selectedP);
-    }else{
-      selectedP=active[active.length-1]
-      setSelectedP(selectedP);
+      if(selectedP==4){
+        setSelectedP(selectedP=1);
+      }else{
+        setSelectedP(prev=>prev+1);
+      }
     }
   }
+  
   console.log(selectedP);
+  console.log(reverseCard.current);
+  console.log(specialCardsCol.current[specialCardsCol.current.length-1]);
+  console.log("/")
 
   if(selectedP==1){
     isP1.current=true;
@@ -694,11 +698,15 @@ function App() {
 
   let lastPLacedCard=(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]));
 
+
   if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="other-skip"){
     skipCard.current=!skipCard.current;
   }else{
     if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="other-reverse"){
-      reverseCard.current=!reverseCard.current;
+      if(placedCard.current[placedCard.current.length-1]!=specialCardsCol.current[specialCardsCol.current.length-1]){
+        reverseCard.current=!reverseCard.current;
+      }
+      specialCardsCol.current.push(placedCard.current[placedCard.current.length-1]);
     }else{
       if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="other-draw2"){
         draw2Card.current=!draw2Card.current;
@@ -739,8 +747,6 @@ function App() {
       if(p=="p1"){
         const index=p1.indexOf(card);
         p1.splice(index,1);
-
-        // nextTurn();
       }
       if(p=="p2"){
         const index=p2.indexOf(card);
