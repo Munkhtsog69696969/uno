@@ -273,15 +273,15 @@ function App() {
 
   const [renderingPurposely,setRenderingPurposely]=useState(0);
 
-  let wildCardColorChange=useRef(false);
+  let wildCardColorChange=useRef(0);
 
-  let wildCardDraw4=useRef(false);
+  let wildCardDraw4=useRef(0);
 
-  let skipCard=useRef(false);
+  let skipCard=useRef(0);
 
   let reverseCard=useRef(false);
 
-  let draw2Card=useRef(false);
+  let draw2Card=useRef(0);
 
   let specialCardsCol=useRef([]);
 
@@ -383,32 +383,497 @@ function App() {
     setP4([...p4]);
   },[players]);
 
-  // console.log(p1);
-  // console.log(p2);
-  // console.log(p3);
-  // console.log(p4);  
-  // console.log(totalCardsB);
 
   function nextTurn(){
-    if(reverseCard.current==true){
+    if(reverseCard.current==true && skipCard.current==0 && active.length==4){
       if(selectedP==1){
         setSelectedP(selectedP=4);
       }else{
         setSelectedP(prev=>prev-1);
       }
-    }else{
+    }
+
+    if(reverseCard.current==false && skipCard.current==0 && active.length==4){
       if(selectedP==4){
         setSelectedP(selectedP=1);
       }else{
         setSelectedP(prev=>prev+1);
       }
     }
+
+    if(skipCard.current==1 && reverseCard.current==true && active.length==4){
+      if(selectedP==2){
+        setSelectedP(selectedP=4);
+        skipCard.current=0;
+      }else{
+        if(selectedP==1){
+          setSelectedP(selectedP=3);
+          skipCard.current=0;
+        }else{
+          setSelectedP(selectedP-2);
+          skipCard.current=0;
+        }
+      }
+    }
+
+    if(skipCard.current==1 && reverseCard.current==false && active.length==4){
+      if(selectedP==4){
+        setSelectedP(selectedP=2);
+        skipCard.current=0;
+      }else{
+        if(selectedP==3){
+          setSelectedP(selectedP=1);
+          skipCard.current=0;
+        }else{
+          setSelectedP(selectedP+2);
+          skipCard.current=0;
+        }
+      }
+    }
+    //
+    if(reverseCard.current==true && skipCard.current==0 && active.length==3){
+      if(selectedP==1){
+        setSelectedP(selectedP=3);
+      }else{
+        setSelectedP(prev=>prev-1);
+      }
+    }
+    
+    if(reverseCard.current==false && skipCard.current==0 && active.length==3){
+      if(selectedP==3){
+        setSelectedP(selectedP=1);
+      }else{
+        setSelectedP(prev=>prev+1);
+      }
+    }
+
+    if(skipCard.current==1 && reverseCard.current==true && active.length==3){
+      if(selectedP==2){
+        setSelectedP(selectedP=3);
+        skipCard.current=0;
+      }else{
+        if(selectedP==1){
+          setSelectedP(selectedP=2);
+          skipCard.current=0;
+        }else{
+          setSelectedP(selectedP-2);
+          skipCard.current=0;
+        }
+      }
+    }
+
+    if(skipCard.current==1 && reverseCard.current==false && active.length==3){
+      if(selectedP==3){
+        setSelectedP(selectedP=2);
+        skipCard.current=0;
+      }else{
+        if(selectedP==2){
+          setSelectedP(selectedP=1);
+          skipCard.current=0;
+        }else{
+          setSelectedP(selectedP+2);
+          skipCard.current=0;
+        }
+      }
+    }
+
+    if(active.length==2 && skipCard.current==1){
+      if(selectedP==1){
+        skipCard.current=0;
+      }else{
+        if(selectedP==2){
+          skipCard.current=0;
+        }
+      }
+    }
+
+    if(active.length==2 && skipCard.current==0){
+      if(selectedP==2){
+        setSelectedP(selectedP=1);
+      }else{
+        if(selectedP==1){
+          setSelectedP(selectedP=2);
+        }
+      }
+    }
+
+    if(active.length==4 && reverseCard.current==false && draw2Card.current==1){
+      if(selectedP==4){
+        p1.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p1.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=2);
+        draw2Card.current=0;
+      }else{
+        if(selectedP==3){
+          p4.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p4.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=1);
+          draw2Card.current=0;
+        }else{
+          if(selectedP==2){
+            p3.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p3.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            setSelectedP(selectedP=4);
+            draw2Card.current=0;
+          }else{
+            if(selectedP==1){
+              p2.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              p2.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              setSelectedP(selectedP=3);
+              draw2Card.current=0;
+            }
+          }
+        }
+      }
+    }
+
+    if(active.length==4 && reverseCard.current==true && draw2Card.current==1){
+      if(selectedP==4){
+        p3.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p3.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=2);
+        draw2Card.current=0;
+      }else{
+        if(selectedP==3){
+          p2.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p2.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=1);
+          draw2Card.current=0;
+        }else{
+          if(selectedP==2){
+            p1.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p1.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            setSelectedP(selectedP=4);
+            draw2Card.current=0;
+          }else{
+            if(selectedP==1){
+              p4.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              p4.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              setSelectedP(selectedP=3);
+              draw2Card.current=0;
+            }
+          }
+        }
+      }
+    }
+
+    if(active.length==3 && reverseCard.current==false && draw2Card.current==1){
+      if(selectedP==1){
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=3);
+        draw2Card.current=0;
+      }else{
+        if(selectedP==2){
+          p3.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p3.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=4);
+          draw2Card.current=0;
+        }else{
+          if(selectedP==3){
+            p4.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p4.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            setSelectedP(selectedP=1);
+            draw2Card.current=0;
+          }
+        }
+      }
+    }
+
+    if(active.length==3 && reverseCard.current==true && draw2Card.current==1){
+      if(selectedP==1){
+        p4.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p4.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=3);
+        draw2Card.current=0;
+      }else{
+        if(selectedP==2){
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=4);
+          draw2Card.current=0;
+        }else{
+          if(selectedP==3){
+            p2.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p2.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            setSelectedP(selectedP=1);
+            draw2Card.current=0;
+          }
+        }
+      }
+    }
+
+    if(active.length==2 && draw2Card.current==1){
+      if(selectedP==1){
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=1);
+        draw2Card.current=0;
+      }else{
+        if(selectedP==2){
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=2);
+          draw2Card.current=0;
+        }
+      }
+    }
+    //wild4Draw
+    if(active.length==4 && reverseCard.current==false && wildCardDraw4.current==1){
+      if(selectedP==4){
+        p1.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p1.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p1.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p1.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=2);
+        wildCardDraw4.current=0;
+      }else{
+        if(selectedP==3){
+          p4.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p4.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p4.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p4.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=1);
+          wildCardDraw4.current=0;
+        }else{
+          if(selectedP==2){
+            p3.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p3.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p3.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p3.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            setSelectedP(selectedP=4);
+            wildCardDraw4.current=0;
+          }else{
+            if(selectedP==1){
+              p2.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              p2.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              p2.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              p2.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              setSelectedP(selectedP=3);
+              wildCardDraw4.current=0;
+            }
+          }
+        }
+      }
+    }
+
+    if(active.length==4 && reverseCard.current==true && wildCardDraw4.current==1){
+      if(selectedP==4){
+        p3.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p3.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p3.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p3.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=2);
+        wildCardDraw4.current=0;
+      }else{
+        if(selectedP==3){
+          p2.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p2.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p2.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p2.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=1);
+          wildCardDraw4.current=0;
+        }else{
+          if(selectedP==2){
+            p1.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p1.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p1.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p1.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            setSelectedP(selectedP=4);
+            wildCardDraw4.current=0;
+          }else{
+            if(selectedP==1){
+              p4.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              p4.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              p4.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              p4.push(totalCardsB[totalCardsB.length-1]);
+              totalCardsB.splice(totalCardsB.length-1,1);
+              setSelectedP(selectedP=3);
+              wildCardDraw4.current=0;
+            }
+          }
+        }
+      }
+    }
+
+    if(active.length==3 && reverseCard.current==false && wildCardDraw4.current==1){
+      if(selectedP==1){
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=3);
+        wildCardDraw4.current=0;
+      }else{
+        if(selectedP==2){
+          p3.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p3.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p3.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p3.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=4);
+          wildCardDraw4.current=0;
+        }else{
+          if(selectedP==3){
+            p4.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p4.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p4.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p4.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            setSelectedP(selectedP=1);
+            wildCardDraw4.current=0;
+          }
+        }
+      }
+    }
+
+    if(active.length==3 && reverseCard.current==true && wildCardDraw4.current==1){
+      if(selectedP==1){
+        p4.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p4.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p4.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p4.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=3);
+        wildCardDraw4.current=0;
+      }else{
+        if(selectedP==2){
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=4);
+          wildCardDraw4.current=0;
+        }else{
+          if(selectedP==3){
+            p2.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p2.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p2.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            p2.push(totalCardsB[totalCardsB.length-1]);
+            totalCardsB.splice(totalCardsB.length-1,1);
+            setSelectedP(selectedP=1);
+            wildCardDraw4.current=0;
+          }
+        }
+      }
+    }
+
+    if(active.length==2 && wildCardDraw4.current==1){
+      if(selectedP==1){
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        p2.push(totalCardsB[totalCardsB.length-1]);
+        totalCardsB.splice(totalCardsB.length-1,1);
+        setSelectedP(selectedP=1);
+        wildCardDraw4.current=0;
+      }else{
+        if(selectedP==2){
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          p1.push(totalCardsB[totalCardsB.length-1]);
+          totalCardsB.splice(totalCardsB.length-1,1);
+          setSelectedP(selectedP=2);
+          wildCardDraw4.current=0;
+        }
+      }
+    }
   }
   
-  console.log(selectedP);
-  console.log(reverseCard.current);
-  console.log(specialCardsCol.current[specialCardsCol.current.length-1]);
-  console.log("/")
+  // console.log(selectedP);
+  // console.log(reverseCard.current);
+  // console.log(specialCardsCol.current[specialCardsCol.current.length-1]);
+  // console.log("/")
 
   if(selectedP==1){
     isP1.current=true;
@@ -449,11 +914,6 @@ function App() {
     }
   }
 
-  // console.log("p1",isP1);
-  // console.log("p2",isP2);
-  // console.log("p3",isP3);
-  // console.log("p4",isP4);
-  // console.log(selectedP);
 
   function specififcCard(type){
     //blue cards
@@ -700,7 +1160,10 @@ function App() {
 
 
   if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="other-skip"){
-    skipCard.current=!skipCard.current;
+    if(placedCard.current[placedCard.current.length-1]!=specialCardsCol.current[specialCardsCol.current.length-1]){
+      skipCard.current=1;
+    }
+    specialCardsCol.current.push(placedCard.current[placedCard.current.length-1]);
   }else{
     if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="other-reverse"){
       if(placedCard.current[placedCard.current.length-1]!=specialCardsCol.current[specialCardsCol.current.length-1]){
@@ -709,40 +1172,32 @@ function App() {
       specialCardsCol.current.push(placedCard.current[placedCard.current.length-1]);
     }else{
       if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="other-draw2"){
-        draw2Card.current=!draw2Card.current;
+        if(placedCard.current[placedCard.current.length-1]!=specialCardsCol.current[specialCardsCol.current.length-1]){
+          draw2Card.current=1;
+        }
+        specialCardsCol.current.push(placedCard.current[placedCard.current.length-1]);
       }else{
         if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="special"){
-          wildCardColorChange.current=!wildCardColorChange.current;
+          wildCardColorChange.current=1;
         }else{
           if(colorAndNumberIndicator(placedCard.current[placedCard.current.length-1]).Number=="specialDraw"){
-            wildCardDraw4.current=!wildCardDraw4.current;
+            if(placedCard.current[placedCard.current.length-1]!=specialCardsCol.current[specialCardsCol.current.length-1]){
+              wildCardDraw4.current=1;
+            }
+            specialCardsCol.current.push(placedCard.current[placedCard.current.length-1]);
           }
         }
       }
     }
   }
-
-  if(reverseCard.current==true){
-    console.log("reversed")
-  }
-
-  // console.log(skipCard.current);
-  // console.log(reverseCard.current);
-  // console.log(draw2Card.current);
-  // console.log(wildCardColorChange.current);
-  // console.log(wildCardDraw4.current);
-
-  // console.log(lastPLacedCard)
-
-  // console.log(selectedP)
+  
+  console.log(skipCard.current);
 
   function plusPlacedCard(card,p){
-    // console.log(p);
-    // console.log(placedCard);
     let chosenCard=colorAndNumberIndicator(card);
     console.log(chosenCard)
 
-    if(lastPLacedCard.Color==chosenCard.Color || lastPLacedCard.Number==chosenCard.Number || chosenCard.Color=="special"){
+    if(lastPLacedCard.Color==chosenCard.Color || lastPLacedCard.Number==chosenCard.Number || chosenCard.Color=="special" || lastPLacedCard.Color=="special" || lastPLacedCard.Color=="specialDraw" || chosenCard.Color=="specialDraw"){
       placedCard.current.push(card);
       if(p=="p1"){
         const index=p1.indexOf(card);
@@ -1110,6 +1565,8 @@ function App() {
 
   // console.log(colorAndNumberIndicator("blue-0"))
 
+  let lastPlayerPlaced=useRef(["p"]);
+
   return (
     <>
       <div className={players==0 ? "players-select" :"players-select-inv"}>
@@ -1156,27 +1613,51 @@ function App() {
              isP1.current?(
               p1.map((card,i)=>{
                 return(
-                  <img src={specififcCard(card)} className="card-image" onClick={()=>plusPlacedCard(card,"p1")}/>
+                  <img src={specififcCard(card)} className="card-image" onClick={()=>{
+                    if(lastPlayerPlaced.current[lastPlayerPlaced.current.length-1]!="p1"){
+                      plusPlacedCard(card,"p1");
+                      lastPlayerPlaced.current.push("p1");
+                    }
+                  }
+                  }/>
                 )
               })
              ):
              isP2.current?(
               p2.map((card,i)=>{
                 return(
-                  <img src={specififcCard(card)} className="card-image" onClick={()=>plusPlacedCard(card,"p2")}/>
+                  <img src={specififcCard(card)} className="card-image" onClick={()=>{
+                    if(lastPlayerPlaced.current[lastPlayerPlaced.current.length-1]!="p2"){
+                      plusPlacedCard(card,"p2");
+                      lastPlayerPlaced.current.push("p2");
+                    }
+                  }
+                  }/>
                 )
               })
              ):
              isP3.current?(
               p3.map((card,i)=>{
                 return(
-                  <img src={specififcCard(card)} className="card-image" onClick={()=>plusPlacedCard(card,"p3")}/>
+                  <img src={specififcCard(card)} className="card-image" onClick={()=>{
+                    if(lastPlayerPlaced.current[lastPlayerPlaced.current.length-1]!="p3"){
+                      plusPlacedCard(card,"p3");
+                      lastPlayerPlaced.current.push("p3");
+                    }
+                  }
+                  }/>
                 )
               })
              ):(
               p4.map((card,i)=>{
                 return(
-                  <img src={specififcCard(card)} className="card-image" onClick={()=>plusPlacedCard(card,"p4")}/>
+                  <img src={specififcCard(card)} className="card-image" onClick={()=>{
+                    if(lastPlayerPlaced.current[lastPlayerPlaced.current.length-1]!="p4"){
+                      plusPlacedCard(card,"p4");
+                      lastPlayerPlaced.current.push("p4");
+                    }
+                  }
+                  }/>
                 )
               })
              )
