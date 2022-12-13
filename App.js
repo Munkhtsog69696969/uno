@@ -1191,7 +1191,7 @@ function App() {
     }
   }
   
-  console.log(skipCard.current);
+  // console.log(skipCard.current);
 
   function plusPlacedCard(card,p){
     let chosenCard=colorAndNumberIndicator(card);
@@ -1218,6 +1218,8 @@ function App() {
       setRenderingPurposely(prev=>prev+1);
     }
   }
+
+
 
   function colorAndNumberIndicator(card){
     let color=null;
@@ -1540,32 +1542,64 @@ function App() {
 
   }
 
-  function getCardFromMod(curretPlayer){
-    if(curretPlayer==1){
+  const lastPLayerTookFromMod=useRef(0);
+
+  function getCardFromMod(currentPlayer){
+    if(currentPlayer==1 && currentPlayer!=lastPLayerTookFromMod.current){
       p1.push(totalCardsB[totalCardsB.length-1]);
       totalCardsB.splice(totalCardsB.length-1,1);
       setP1([...p1]);
+      lastPLayerTookFromMod.current=1;
     }
-    if(curretPlayer==2){
+    if(currentPlayer==2 && currentPlayer!=lastPLayerTookFromMod.current){
       p2.push(totalCardsB[totalCardsB.length-1]);
       totalCardsB.splice(totalCardsB.length-1,1);
       setP2([...p2]);
+      lastPLayerTookFromMod.current=2;
     }
-    if(curretPlayer==3){
+    if(currentPlayer==3 && currentPlayer!=lastPLayerTookFromMod.current){
       p3.push(totalCardsB[totalCardsB.length-1]);
       totalCardsB.splice(totalCardsB.length-1,1);
       setP3([...p3]);
+      lastPLayerTookFromMod.current=3;
     }
-    if(curretPlayer==4){
+    if(currentPlayer==4 && currentPlayer!=lastPLayerTookFromMod.current){
       p4.push(totalCardsB[totalCardsB.length-1]);
       totalCardsB.splice(totalCardsB.length-1,1);
       setP4([...p4]);
+      lastPLayerTookFromMod.current=4;
     }
   }
 
-  // console.log(colorAndNumberIndicator("blue-0"))
-
   let lastPlayerPlaced=useRef(["p"]);
+
+  // console.log(lastPLacedCard)
+
+  let winner=useState(null);
+
+  active.map((_,i)=>{
+    if(i+1==1){
+      if(p1.length==0){
+        winner=1;
+      }
+    }
+    if(i+1==2){
+      if(p2.length==0){
+        winner=2;
+      }
+    }
+    if(i+1==3){
+      if(p3.length==0){
+        winner=3;
+      }
+    }
+    if(i+1==4){
+      if(p4.length==0){
+        winner=4;
+      }
+    }
+  });
+
 
   return (
     <>
@@ -1584,7 +1618,7 @@ function App() {
         }}>4</div>
       </div>
 
-      <div className='game'>
+      <div className={winner==null ? "game-winner" : "game"}>
         <div className='game1'>
           <p style={{color:"white",fontWeight:"bold",fontSize:"20px"}}>
             {
